@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帷幕与长剑</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .scene {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 底部白色画面 */
+        .content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+        }
+
+        /* 左侧帷幕 */
+        .curtain-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: #ffffff;
+            animation: openLeft 0.8s ease-in-out forwards;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        /* 右侧帷幕 */
+        .curtain-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: #ffffff;
+            animation: openRight 0.8s ease-in-out forwards;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        /* 山水画风格云彩 */
+        .cloud {
+            position: absolute;
+            animation: cloudFade 0.8s ease-in forwards;
+        }
+
+        .cloud svg {
+            width: 100%;
+            height: 100%;
+            filter: blur(0.5px);
+        }
+
+        /* 左侧帷幕云彩 */
+        .cloud-1 { top: 5%; left: 10%; width: 160px; height: 80px; }
+        .cloud-2 { top: 20%; left: 40%; width: 220px; height: 100px; }
+        .cloud-3 { top: 40%; left: 5%; width: 140px; height: 65px; }
+        .cloud-4 { top: 60%; left: 30%; width: 180px; height: 85px; }
+        .cloud-5 { top: 15%; left: 60%; width: 120px; height: 55px; }
+        .cloud-6 { top: 35%; left: 20%; width: 150px; height: 70px; }
+        .cloud-7 { top: 75%; left: 50%; width: 170px; height: 78px; }
+        .cloud-8 { top: 85%; left: 15%; width: 200px; height: 90px; }
+
+        /* 右侧帷幕云彩 */
+        .cloud-9 { top: 8%; right: 15%; width: 150px; height: 72px; }
+        .cloud-10 { top: 25%; right: 35%; width: 200px; height: 92px; }
+        .cloud-11 { top: 45%; right: 10%; width: 130px; height: 60px; }
+        .cloud-12 { top: 65%; right: 45%; width: 175px; height: 80px; }
+        .cloud-13 { top: 80%; right: 25%; width: 190px; height: 88px; }
+        .cloud-14 { top: 90%; right: 55%; width: 140px; height: 65px; }
+
+        /* 屏幕中间云彩 - 在帷幕层下方 */
+        .cloud-center-1 { top: 30%; left: 45%; width: 240px; height: 110px; z-index: 1; opacity: 0; animation: cloudCenterFade 0.8s ease-in forwards; }
+        .cloud-center-2 { top: 55%; left: 50%; width: 200px; height: 95px; z-index: 1; opacity: 0; animation: cloudCenterFade 0.8s ease-in forwards 0.1s; }
+        .cloud-center-3 { top: 75%; left: 42%; width: 260px; height: 120px; z-index: 1; opacity: 0; animation: cloudCenterFade 0.8s ease-in forwards 0.2s; }
+
+        /* 屏幕中间云彩淡出动画 */
+        @keyframes cloudCenterFade {
+            0% { opacity: 0.9; }
+            100% { opacity: 0; }
+        }
+
+        /* 云彩淡出动画 - 与帷幕同步 */
+        @keyframes cloudFade {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .cloud {
+            animation: cloudFade 0.8s ease-in forwards;
+        }
+
+        /* 帷幕边缘（无边界线） */
+        .curtain-left::after,
+        .curtain-right::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 100%;
+        }
+
+        /* 长剑容器 */
+        .sword-wrapper {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            animation: swordFall 0.8s ease-in forwards;
+        }
+
+        /* 长剑SVG */
+        .sword-svg {
+            width: 30px;
+            height: 50vh;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.6))
+                    drop-shadow(0 0 16px rgba(192,192,192,0.4));
+        }
+
+        /* 帷幕打开动画 - 加速版 */
+        @keyframes openLeft {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes openRight {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* 长剑下落动画 - 与帷幕同时完成 */
+        @keyframes swordFall {
+            0% {
+                top: -12vh;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                top: 100vh;
+                opacity: 1;
+            }
+        }
+
+        /* 重新播放按钮 */
+        .replay-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease 1.5s forwards;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .replay-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scene">
+        <!-- 底部白色内容 -->
+        <div class="content"></div>
+
+        <!-- 长剑 -->
+        <div class="sword-wrapper">
+            <svg class="sword-svg" viewBox="0 0 24 120" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- 剑柄渐变 -->
+                    <linearGradient id="hilt" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#3d2914"/>
+                        <stop offset="50%" style="stop-color:#8b5a2b"/>
+                        <stop offset="100%" style="stop-color:#3d2914"/>
+                    </linearGradient>
+
+                    <!-- 剑托渐变 -->
+                    <linearGradient id="guard" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#f4d03f"/>
+                        <stop offset="100%" style="stop-color:#b8860b"/>
+                    </linearGradient>
+
+                    <!-- 剑刃渐变 -->
+                    <linearGradient id="blade" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#a8a8a8"/>
+                        <stop offset="30%" style="stop-color:#e8e8e8"/>
+                        <stop offset="50%" style="stop-color:#ffffff"/>
+                        <stop offset="70%" style="stop-color:#e8e8e8"/>
+                        <stop offset="100%" style="stop-color:#a8a8a8"/>
+                    </linearGradient>
+                </defs>
+
+                <!-- 剑柄顶部 -->
+                <rect x="9" y="0" width="6" height="3" rx="1" fill="url(#guard)"/>
+
+                <!-- 剑柄 -->
+                <rect x="10" y="3" width="4" height="20" rx="1" fill="url(#hilt)"/>
+
+                <!-- 剑柄装饰 -->
+                <rect x="8" y="8" width="8" height="2" rx="1" fill="#d4af37"/>
+                <rect x="8" y="14" width="8" height="2" rx="1" fill="#d4af37"/>
+
+                <!-- 剑托（护手） -->
+                <ellipse cx="12" cy="26" rx="10" ry="3" fill="url(#guard)"/>
+
+                <!-- 剑托装饰 -->
+                <circle cx="4" cy="26" r="2" fill="#f4d03f"/>
+                <circle cx="20" cy="26" r="2" fill="#f4d03f"/>
+
+                <!-- 剑刃 -->
+                <polygon points="12,30 16,110 8,110" fill="url(#blade)"/>
+
+                <!-- 剑刃高光 -->
+                <polygon points="12,30 13,110 11,110" fill="rgba(255,255,255,0.4)"/>
+
+                <!-- 剑尖 -->
+                <polygon points="12,110 14,118 10,118" fill="#d0d0d0"/>
+            </svg>
+        </div>
+
+        <!-- 左侧帷幕 -->
+        <div class="curtain-left">
+            <!-- 山水画风格云彩 -->
+            <div class="cloud cloud-1">
+                <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="50" cy="30" rx="45" ry="18" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="2"/>
+                    <ellipse cx="35" cy="28" rx="25" ry="12" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1.5"/>
+                    <ellipse cx="65" cy="32" rx="22" ry="10" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-2">
+                <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="60" cy="35" rx="55" ry="22" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="2"/>
+                    <ellipse cx="40" cy="30" rx="30" ry="14" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1.5"/>
+                    <ellipse cx="80" cy="38" rx="28" ry="12" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1.5"/>
+                    <ellipse cx="60" cy="25" rx="20" ry="10" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-3">
+                <svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="40" cy="25" rx="35" ry="14" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1.5"/>
+                    <ellipse cx="28" cy="22" rx="18" ry="8" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1"/>
+                    <ellipse cx="52" cy="28" rx="16" ry="7" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-4">
+                <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="50" cy="30" rx="45" ry="18" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="2"/>
+                    <ellipse cx="35" cy="26" rx="22" ry="10" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1.5"/>
+                    <ellipse cx="65" cy="34" rx="20" ry="9" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-5">
+                <svg viewBox="0 0 70 35" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="35" cy="20" rx="30" ry="12" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1.5"/>
+                    <ellipse cx="25" cy="18" rx="15" ry="7" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1"/>
+                    <ellipse cx="45" cy="22" rx="14" ry="6" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-6">
+                <svg viewBox="0 0 90 45" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="45" cy="28" rx="40" ry="16" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1.5"/>
+                    <ellipse cx="32" cy="24" rx="20" ry="9" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1"/>
+                    <ellipse cx="58" cy="30" rx="18" ry="8" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-7">
+                <svg viewBox="0 0 110 55" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="55" cy="32" rx="50" ry="20" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="2"/>
+                    <ellipse cx="38" cy="28" rx="26" ry="12" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1.5"/>
+                    <ellipse cx="72" cy="36" rx="24" ry="10" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-8">
+                <svg viewBox="0 0 130 65" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="65" cy="38" rx="60" ry="24" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="2"/>
+                    <ellipse cx="45" cy="32" rx="32" ry="15" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1.5"/>
+                    <ellipse cx="85" cy="42" rx="30" ry="13" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1.5"/>
+                    <ellipse cx="65" cy="26" rx="22" ry="10" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 右侧帷幕 -->
+        <div class="curtain-right">
+            <!-- 山水画风格云彩 -->
+            <div class="cloud cloud-9">
+                <svg viewBox="0 0 90 45" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="45" cy="28" rx="40" ry="16" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1.5"/>
+                    <ellipse cx="32" cy="24" rx="20" ry="9" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1"/>
+                    <ellipse cx="58" cy="30" rx="18" ry="8" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-10">
+                <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="60" cy="35" rx="55" ry="22" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="2"/>
+                    <ellipse cx="42" cy="30" rx="28" ry="13" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1.5"/>
+                    <ellipse cx="78" cy="38" rx="26" ry="11" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-11">
+                <svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="40" cy="25" rx="35" ry="14" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1.5"/>
+                    <ellipse cx="28" cy="22" rx="18" ry="8" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1"/>
+                    <ellipse cx="52" cy="28" rx="16" ry="7" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-12">
+                <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="50" cy="30" rx="45" ry="18" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="2"/>
+                    <ellipse cx="35" cy="26" rx="22" ry="10" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1.5"/>
+                    <ellipse cx="65" cy="34" rx="20" ry="9" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-13">
+                <svg viewBox="0 0 140 70" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="70" cy="40" rx="65" ry="26" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="2"/>
+                    <ellipse cx="48" cy="34" rx="34" ry="16" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1.5"/>
+                    <ellipse cx="92" cy="44" rx="32" ry="14" fill="rgba(255,255,255,0.9)" stroke="#8bc34a" stroke-width="1.5"/>
+                    <ellipse cx="70" cy="28" rx="24" ry="11" fill="rgba(255,255,255,0.9)" stroke="#7cb342" stroke-width="1"/>
+                </svg>
+            </div>
+            <div class="cloud cloud-14">
+                <svg viewBox="0 0 85 42" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="42" cy="26" rx="38" ry="15" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1.5"/>
+                    <ellipse cx="30" cy="23" rx="19" ry="9" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1"/>
+                    <ellipse cx="54" cy="29" rx="17" ry="8" fill="rgba(255,255,255,0.9)" stroke="#9ccc65" stroke-width="1"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 屏幕中间云彩 -->
+        <div class="cloud cloud-center-1">
+            <svg viewBox="0 0 140 70" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="70" cy="40" rx="65" ry="28" fill="rgba(255,255,255,0.95)" stroke="#689f38" stroke-width="2.5"/>
+                <ellipse cx="48" cy="34" rx="35" ry="16" fill="rgba(255,255,255,0.95)" stroke="#689f38" stroke-width="2"/>
+                <ellipse cx="92" cy="44" rx="32" ry="14" fill="rgba(255,255,255,0.95)" stroke="#689f38" stroke-width="2"/>
+                <ellipse cx="70" cy="26" rx="25" ry="12" fill="rgba(255,255,255,0.95)" stroke="#7cb342" stroke-width="1.5"/>
+            </svg>
+        </div>
+        <div class="cloud cloud-center-2">
+            <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="60" cy="35" rx="55" ry="24" fill="rgba(255,255,255,0.95)" stroke="#7cb342" stroke-width="2"/>
+                <ellipse cx="42" cy="30" rx="30" ry="14" fill="rgba(255,255,255,0.95)" stroke="#7cb342" stroke-width="1.5"/>
+                <ellipse cx="78" cy="38" rx="28" ry="12" fill="rgba(255,255,255,0.95)" stroke="#7cb342" stroke-width="1.5"/>
+            </svg>
+        </div>
+        <div class="cloud cloud-center-3">
+            <svg viewBox="0 0 160 80" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="80" cy="45" rx="75" ry="32" fill="rgba(255,255,255,0.95)" stroke="#689f38" stroke-width="2.5"/>
+                <ellipse cx="55" cy="38" rx="40" ry="18" fill="rgba(255,255,255,0.95)" stroke="#689f38" stroke-width="2"/>
+                <ellipse cx="105" cy="48" rx="38" ry="16" fill="rgba(255,255,255,0.95)" stroke="#689f38" stroke-width="2"/>
+                <ellipse cx="80" cy="30" rx="28" ry="13" fill="rgba(255,255,255,0.95)" stroke="#8bc34a" stroke-width="1.5"/>
+            </svg>
+        </div>
+    </div>
+
+    <button class="replay-btn" onclick="replayAnimation()">重新播放</button>
+
+    <script>
+        function replayAnimation() {
+            const curtainLeft = document.querySelector('.curtain-left');
+            const curtainRight = document.querySelector('.curtain-right');
+            const swordWrapper = document.querySelector('.sword-wrapper');
+            const replayBtn = document.querySelector('.replay-btn');
+
+            // 重置动画
+            curtainLeft.style.animation = 'none';
+            curtainRight.style.animation = 'none';
+            swordWrapper.style.animation = 'none';
+            replayBtn.style.animation = 'none';
+
+            // 强制重排
+            void curtainLeft.offsetWidth;
+
+            // 重新应用动画
+            curtainLeft.style.animation = 'openLeft 0.8s ease-in-out forwards';
+            curtainRight.style.animation = 'openRight 0.8s ease-in-out forwards';
+            swordWrapper.style.animation = 'swordFall 0.8s ease-in forwards';
+            replayBtn.style.animation = 'fadeIn 0.5s ease 1.5s forwards';
+        }
+    </script>
+</body>
+</html>

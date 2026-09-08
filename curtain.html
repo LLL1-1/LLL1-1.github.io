@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帷幕开启效果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .curtain-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 底部白色画面 */
+        .content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content-text {
+            color: #333;
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            opacity: 0;
+            animation: fadeIn 1s ease 2.5s forwards;
+        }
+
+        /* 左侧帷幕 */
+        .curtain-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            animation: openLeft 2s ease-in-out forwards;
+            transform-origin: left center;
+        }
+
+        /* 右侧帷幕 */
+        .curtain-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(225deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            animation: openRight 2s ease-in-out forwards;
+            transform-origin: right center;
+        }
+
+        /* 帷幕褶皱效果 */
+        .curtain-left::before,
+        .curtain-right::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 20px,
+                rgba(0,0,0,0.1) 20px,
+                rgba(0,0,0,0.1) 22px
+            );
+        }
+
+        /* 帷幕边缘阴影 */
+        .curtain-left::after,
+        .curtain-right::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 30px;
+            height: 100%;
+        }
+
+        .curtain-left::after {
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.3));
+        }
+
+        .curtain-right::after {
+            left: 0;
+            background: linear-gradient(270deg, transparent, rgba(0,0,0,0.3));
+        }
+
+        /* 左侧帷幕打开动画 */
+        @keyframes openLeft {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* 右侧帷幕打开动画 */
+        @keyframes openRight {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* 内容淡入动画 */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 重新播放按钮 */
+        .replay-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease 3.5s forwards;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .replay-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="curtain-container">
+        <!-- 底部白色内容 -->
+        <div class="content">
+            <div class="content-text">WELCOME</div>
+        </div>
+
+        <!-- 左侧帷幕 -->
+        <div class="curtain-left"></div>
+
+        <!-- 右侧帷幕 -->
+        <div class="curtain-right"></div>
+    </div>
+
+    <button class="replay-btn" onclick="replayAnimation()">重新播放</button>
+
+    <script>
+        function replayAnimation() {
+            const container = document.querySelector('.curtain-container');
+            const curtainLeft = document.querySelector('.curtain-left');
+            const curtainRight = document.querySelector('.curtain-right');
+            const contentText = document.querySelector('.content-text');
+            const replayBtn = document.querySelector('.replay-btn');
+
+            // 重置动画
+            curtainLeft.style.animation = 'none';
+            curtainRight.style.animation = 'none';
+            contentText.style.animation = 'none';
+            replayBtn.style.animation = 'none';
+
+            // 强制重排
+            void container.offsetWidth;
+
+            // 重新应用动画
+            curtainLeft.style.animation = 'openLeft 2s ease-in-out forwards';
+            curtainRight.style.animation = 'openRight 2s ease-in-out forwards';
+            contentText.style.animation = 'fadeIn 1s ease 2.5s forwards';
+            replayBtn.style.animation = 'fadeIn 0.5s ease 3.5s forwards';
+        }
+    </script>
+</body>
+</html>

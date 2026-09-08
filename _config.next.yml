@@ -1,0 +1,180 @@
+# ---------------------------------------------------------------
+# NexT Theme Configuration
+# ---------------------------------------------------------------
+
+# Schemes
+# scheme: Muse
+scheme: Mist
+# scheme: Pisces
+# scheme: Gemini
+
+# Dark Mode
+darkmode: false
+
+# ---------------------------------------------------------------
+# Menu Settings
+# ---------------------------------------------------------------
+menu:
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+  # schedule: /schedule/ || fa fa-calendar
+  # commonweal: /404/ || fa fa-heartbeat
+
+# ---------------------------------------------------------------
+# Social Settings
+# ---------------------------------------------------------------
+social:
+  GitHub: https://github.com/LLL1-1 || fab fa-github
+  #E-Mail: mailto:yourname@gmail.com || fa fa-envelope
+  #Weibo: https://weibo.com/yourname || fab fa-weibo
+  #Google: https://plus.google.com/yourname || fab fa-google
+  #Twitter: https://twitter.com/yourname || fab fa-twitter
+  #FB Page: https://www.facebook.com/yourname || fab fa-facebook
+  #StackOverflow: https://stackoverflow.com/yourname || fab fa-stack-overflow
+  #YouTube: https://youtube.com/yourname || fab fa-youtube
+  #Instagram: https://instagram.com/yourname || fab fa-instagram
+  #Skype: skype:yourname?call || fab fa-skype
+
+social_icons:
+  enable: true
+  icons_only: false
+  transition: false
+
+# ---------------------------------------------------------------
+# Content Settings
+# ---------------------------------------------------------------
+# excerpt_description: true
+# auto_excerpt:
+#   enable: false
+#   length: 150
+
+# ---------------------------------------------------------------
+# Layout Settings
+# ---------------------------------------------------------------
+# Sidebar
+sidebar:
+  # Sidebar Position - Left or Right
+  position: left
+  #position: right
+
+  # Sidebar Display - Block or Always
+  display: post
+  #display: always
+  #display: mobile
+
+  # Sidebar Offset from Top
+  offset: 12
+  onmobile: false
+
+# ---------------------------------------------------------------
+# Post Settings
+# ---------------------------------------------------------------
+# Post meta
+post_meta:
+  date_type: created
+  categories: true
+  tags: true
+
+# ---------------------------------------------------------------
+# Misc Theme Settings
+# ---------------------------------------------------------------
+# Custom Fonts
+# fonts:
+#   external: true
+#   family: Lora
+#   size:
+
+# Font Settings
+font:
+  enable: true
+  host: https://fonts.googleapis.com
+  global:
+    external: true
+    family: Noto Serif SC
+    size: 1
+  title:
+    external: true
+    family: Noto Serif SC
+    size:
+  headings:
+    external: true
+    family: Noto Serif SC
+    size:
+  posts:
+    external: true
+    family: Noto Serif SC
+    size:
+  codes:
+    external: true
+    family: JetBrains Mono
+    size: 0.875
+
+# ---------------------------------------------------------------
+# SEO Settings
+# ---------------------------------------------------------------
+# description: Hexo theme NexT
+
+# ---------------------------------------------------------------
+# Third Party Services
+# ---------------------------------------------------------------
+# Valine
+# valine:
+#   enable: false
+#   appid: ''
+#   appkey: ''
+
+# Disqus
+# disqus:
+#   shortname: ''
+#   count: true
+
+# ---------------------------------------------------------------
+# Tags Settings
+# ---------------------------------------------------------------
+# TagCloud
+tagcloud:
+  min: 12
+  max: 30
+  amount: 200
+  orderby: name
+  order: 1
+
+# ---------------------------------------------------------------
+# Back to top
+# ---------------------------------------------------------------
+back2top:
+  enable: true
+  sidebar: false
+  scrollpercent: true
+
+# ---------------------------------------------------------------
+# Reading Progress
+# ---------------------------------------------------------------
+reading_progress:
+  enable: true
+  position: top
+  color: "#37c6c0"
+  height: 2px
+
+# ---------------------------------------------------------------
+# GitHub Banner
+# ---------------------------------------------------------------
+github_banner:
+  enable: true
+  permalink: https://github.com/LLL1-1
+  title: Follow me on GitHub
+
+# ---------------------------------------------------------------
+# Custom Styles
+# ---------------------------------------------------------------
+custom:
+  - css/custom.css
+
+# Inject
+inject:
+  head:
+    - <link rel="stylesheet" href="/css/custom.css">
+  bottom: []
