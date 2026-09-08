@@ -1,0 +1,339 @@
+/* ============================================
+   中国山水画风格 - Custom Styles
+   ============================================ */
+
+/* 全局背景 */
+body {
+  background: linear-gradient(180deg, #e8f4f8 0%, #d4e8e0 50%, #c8dce8 100%);
+  min-height: 100vh;
+}
+
+/* 背景图层 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/images/landscape-bg.svg') center center / cover no-repeat;
+  opacity: 0.4;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 主容器 */
+.main-inner {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(100, 150, 180, 0.2);
+  margin: 20px auto;
+  padding: 30px;
+  max-width: 900px;
+}
+
+/* 头部区域 */
+.header {
+  background: linear-gradient(135deg, rgba(168, 208, 224, 0.3), rgba(180, 210, 190, 0.3));
+  border-bottom: 2px solid rgba(100, 150, 180, 0.3);
+  padding: 20px 0;
+  margin-bottom: 30px;
+}
+
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+/* 站点标题 */
+.site-title {
+  font-family: 'STKaiti', 'KaiTi', 'Microsoft YaHei', serif;
+  font-size: 2.5em;
+  color: #4a6a7a;
+  text-shadow: 2px 2px 4px rgba(100, 150, 180, 0.3);
+  margin: 0;
+  letter-spacing: 3px;
+}
+
+/* 站点副标题 */
+.site-subtitle {
+  font-family: 'STKaiti', 'KaiTi', 'Microsoft YaHei', serif;
+  font-size: 1.1em;
+  color: #6a8a9a;
+  margin: 5px 0 0 0;
+  letter-spacing: 2px;
+}
+
+/* 导航菜单 */
+.menu-item a {
+  font-family: 'STKaiti', 'KaiTi', 'Microsoft YaHei', serif;
+  color: #5a7a8a;
+  transition: all 0.3s ease;
+  padding: 8px 15px;
+  border-radius: 4px;
+}
+
+.menu-item a:hover {
+  color: #3a5a6a;
+  background: rgba(168, 208, 224, 0.3);
+}
+
+/* 文章容器 */
+.post-block {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 25px;
+  border: 1px solid rgba(168, 208, 224, 0.3);
+  box-shadow: 0 2px 10px rgba(100, 150, 180, 0.1);
+  transition: all 0.3s ease;
+}
+
+.post-block:hover {
+  box-shadow: 0 4px 20px rgba(100, 150, 180, 0.2);
+  transform: translateY(-2px);
+}
+
+/* 文章标题 */
+.post-title {
+  font-family: 'STKaiti', 'KaiTi', 'Microsoft YaHei', serif;
+  color: #4a6a7a;
+  font-size: 1.8em;
+  margin-bottom: 15px;
+  border-bottom: 2px solid rgba(168, 208, 224, 0.4);
+  padding-bottom: 10px;
+}
+
+.post-title a {
+  color: #4a6a7a;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.post-title a:hover {
+  color: #2a4a5a;
+}
+
+/* 文章内容 */
+.post-body {
+  font-family: 'STSong', 'SimSun', 'Microsoft YaHei', serif;
+  color: #3a4a5a;
+  line-height: 1.8;
+  font-size: 1.05em;
+}
+
+.post-body h2,
+.post-body h3,
+.post-body h4 {
+  font-family: 'STKaiti', 'KaiTi', 'Microsoft YaHei', serif;
+  color: #4a6a7a;
+  border-left: 4px solid #a8d0e0;
+  padding-left: 15px;
+  margin: 25px 0 15px 0;
+}
+
+.post-body h2 {
+  font-size: 1.5em;
+}
+
+.post-body h3 {
+  font-size: 1.3em;
+}
+
+/* 文章元信息 */
+.post-meta {
+  color: #7a9aaa;
+  font-size: 0.9em;
+  margin-bottom: 15px;
+}
+
+.post-meta-item {
+  margin-right: 15px;
+}
+
+.post-meta-item a {
+  color: #6a8a9a;
+  text-decoration: none;
+}
+
+.post-meta-item a:hover {
+  color: #4a6a7a;
+}
+
+/* 标签 */
+.tag-cloud a {
+  color: #6a8a9a;
+  background: rgba(168, 208, 224, 0.2);
+  padding: 4px 12px;
+  border-radius: 15px;
+  margin: 3px;
+  display: inline-block;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.tag-cloud a:hover {
+  background: rgba(168, 208, 224, 0.4);
+  color: #4a6a7a;
+}
+
+/* 分类 */
+.post-category {
+  color: #6a8a9a;
+  background: rgba(180, 210, 190, 0.3);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+/* 代码块 */
+code {
+  background: rgba(168, 208, 224, 0.15);
+  color: #4a5a6a;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.9em;
+}
+
+pre {
+  background: rgba(58, 70, 80, 0.9);
+  color: #d4e8e0;
+  padding: 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid rgba(100, 150, 180, 0.3);
+}
+
+pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* 引用块 */
+blockquote {
+  background: rgba(168, 208, 224, 0.15);
+  border-left: 4px solid #a8d0e0;
+  padding: 15px 20px;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+  color: #5a6a7a;
+  font-style: italic;
+}
+
+/* 链接 */
+a {
+  color: #4a8aaa;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #2a6a8a;
+}
+
+/* 侧边栏 */
+.sidebar {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid rgba(168, 208, 224, 0.3);
+}
+
+.sidebar-inner {
+  background: transparent;
+}
+
+/* 侧边栏标题 */
+.sidebar-title {
+  font-family: 'STKaiti', 'KaiTi', 'Microsoft YaHei', serif;
+  color: #4a6a7a;
+  border-bottom: 2px solid rgba(168, 208, 224, 0.4);
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+/* 页脚 */
+.footer {
+  background: rgba(168, 208, 224, 0.2);
+  border-top: 2px solid rgba(168, 208, 224, 0.3);
+  padding: 20px 0;
+  margin-top: 40px;
+  color: #6a8a9a;
+}
+
+.footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 30px;
+  text-align: center;
+}
+
+/* 回到顶部按钮 */
+.back-to-top {
+  background: rgba(168, 208, 224, 0.6);
+  color: #4a6a7a;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(100, 150, 180, 0.3);
+}
+
+.back-to-top:hover {
+  background: rgba(168, 208, 224, 0.8);
+  transform: translateY(-3px);
+}
+
+/* 阅读进度条 */
+.reading-progress-bar {
+  background: linear-gradient(90deg, #a8d0e0, #b4d2be);
+  height: 3px;
+}
+
+/* 选中文本样式 */
+::selection {
+  background: rgba(168, 208, 224, 0.4);
+  color: #2a4a5a;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(168, 208, 224, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 208, 224, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 208, 224, 0.6);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .main-inner {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .site-title {
+    font-size: 1.8em;
+  }
+
+  .post-title {
+    font-size: 1.4em;
+  }
+}
