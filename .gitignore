@@ -3,3 +3,4 @@ node_modules/
 _multiconfig.yml
 .DS_Store
 Thumbs.db
+.github/

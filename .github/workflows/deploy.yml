@@ -29,10 +29,10 @@ jobs:
       - name: Build
         run: npx hexo generate
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          force_orphan: true
-          destination_dir: .
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f public/*
+          git commit -m "Auto build" || echo "No changes"
+          git push origin HEAD:master
