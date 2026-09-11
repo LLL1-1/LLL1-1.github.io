@@ -1,0 +1,132 @@
+{% extends '_layout.njk' %}
+
+{% block title %}{{ config.title }}{% endblock %}
+
+{# 长条抽离开篇动效 — 仅首页触发 #}
+{% block ink_intro %}
+  <div class="strip-intro" id="stripIntro">
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+    <div class="strip"></div>
+  </div>
+  <script>
+    (function() {
+      var intro = document.getElementById('stripIntro');
+      if (!intro) return;
+      setTimeout(function() { intro.remove(); }, 700);
+    })();
+  </script>
+{% endblock %}
+
+{% block content %}
+
+  <div class="home-layout">
+
+    <!-- 左侧个人资料栏 -->
+    <aside class="profile-card">
+      <div class="profile-header">
+        <img class="profile-avatar" src="/images/avatar.jpg" alt="avatar">
+        <span class="profile-name">长青</span>
+      </div>
+      <div class="profile-recent-title">最近更新</div>
+      <ul class="profile-recent-list">
+        {% for post in page.posts.toArray() %}
+          {% if loop.index <= 6 %}
+            <li><a href="{{ url_for(post.path) }}" title="{{ post.title }}">{{ post.title }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </aside>
+
+    <!-- 中间文章列表 -->
+    <div class="articles-col">
+      {% for post in page.posts.toArray() %}
+        <article class="index-card">
+          <a class="index-img" href="{{ url_for(post.path) }}">
+            {% if post.banner %}
+              <img src="{{ url_for(post.banner) }}" alt="{{ post.title }}">
+            {% else %}
+              {% set n = loop.index % 3 %}
+              {% if n == 1 %}
+                <img src="/images/thumb-1.svg" alt="{{ post.title }}">
+              {% elif n == 2 %}
+                <img src="/images/thumb-2.svg" alt="{{ post.title }}">
+              {% else %}
+                <img src="/images/thumb-3.svg" alt="{{ post.title }}">
+              {% endif %}
+            {% endif %}
+          </a>
+          <div class="index-info">
+            <h2 class="index-title">
+              <a href="{{ url_for(post.path) }}">{{ post.title }}</a>
+            </h2>
+            <div class="index-meta">
+              <span>{{ date(post.date, 'YYYY-MM-DD') }}</span>
+              {% if post.categories and post.categories.length %}
+                {% for cat in post.categories.toArray() %}
+                  <span class="index-tag">📁 {{ cat.name }}</span>
+                {% endfor %}
+              {% endif %}
+              {% if post.tags and post.tags.length %}
+                {% for tag in post.tags.toArray() %}
+                  <span class="index-tag"># {{ tag.name }}</span>
+                {% endfor %}
+              {% endif %}
+            </div>
+            <div class="index-excerpt">
+              {{ post.excerpt or post.content | striptags | truncate(90) }}
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+
+      {% if page.prev or page.next %}
+        <div class="pagination">
+          {% if page.prev %}
+            <a href="{{ url_for(page.prev_link) }}">← 上一页</a>
+          {% endif %}
+          {% if page.next %}
+            <a href="{{ url_for(page.next_link) }}">下一页 →</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- 右侧项目栏 -->
+    <aside class="projects-card">
+      <div class="projects-title">📂 项目</div>
+
+      <a class="project-item" href="/projects/">
+        <div class="project-item-name">🚀 个人博客</div>
+        <div class="project-item-desc">基于 Hexo + GitHub Pages 的个人博客，自定义 Fluid 风格主题</div>
+      </a>
+
+      <a class="project-item" href="/projects/">
+        <div class="project-item-name">🎨 UI 动效库</div>
+        <div class="project-item-desc">收藏常用的 CSS 动效：开屏长条抽离、玻璃质感、视差滚动</div>
+      </a>
+
+      <a class="project-item" href="/projects/">
+        <div class="project-item-name">📖 学习笔记集</div>
+        <div class="project-item-desc">前端技术学习笔记：CSS 动画、JS 交互、构建工具链</div>
+      </a>
+
+      <a class="projects-more" href="/projects/">查看全部项目 →</a>
+    </aside>
+
+  </div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d6ecf5"/>
+      <stop offset="45%" stop-color="#dcefe2"/>
+      <stop offset="100%" stop-color="#c9e3ec"/>
+    </linearGradient>
+    <radialGradient id="bubble1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8fd0e8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#8fd0e8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bubble2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a4dcb8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#a4dcb8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bubble3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b5dde9" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#c9e8d5" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="100%" height="100%" fill="url(#bgGrad)"/>
+
+  <!-- 浮动光斑 -->
+  <circle cx="300" cy="300" r="380" fill="url(#bubble1)">
+    <animate attributeName="cy" values="300;250;300" dur="9s" repeatCount="indefinite"/>
+    <animate attributeName="cx" values="300;340;300" dur="11s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="1600" cy="400" r="420" fill="url(#bubble2)">
+    <animate attributeName="cy" values="400;460;400" dur="10s" repeatCount="indefinite"/>
+    <animate attributeName="cx" values="1600;1550;1600" dur="13s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="960" cy="200" r="280" fill="url(#bubble3)">
+    <animate attributeName="cy" values="200;170;200" dur="8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="600" cy="800" r="300" fill="url(#bubble2)">
+    <animate attributeName="cy" values="800;850;800" dur="12s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="1400" cy="850" r="260" fill="url(#bubble1)">
+    <animate attributeName="cy" values="850;810;850" dur="9s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- 底部柔和波浪 -->
+  <path d="M0,880 Q320,820 640,870 T1280,860 T1920,880 L1920,1080 L0,1080Z" fill="url(#waveGrad)">
+    <animate attributeName="d"
+      values="M0,880 Q320,820 640,870 T1280,860 T1920,880 L1920,1080 L0,1080Z;
+              M0,870 Q320,900 640,850 T1280,880 T1920,860 L1920,1080 L0,1080Z;
+              M0,880 Q320,820 640,870 T1280,860 T1920,880 L1920,1080 L0,1080Z"
+      dur="12s" repeatCount="indefinite"/>
+  </path>
+  <path d="M0,940 Q400,900 800,940 T1600,930 T1920,945 L1920,1080 L0,1080Z" fill="#b8dfea" opacity="0.4">
+    <animate attributeName="d"
+      values="M0,940 Q400,900 800,940 T1600,930 T1920,945 L1920,1080 L0,1080Z;
+              M0,930 Q400,950 800,925 T1600,945 T1920,935 L1920,1080 L0,1080Z;
+              M0,940 Q400,900 800,940 T1600,930 T1920,945 L1920,1080 L0,1080Z"
+      dur="15s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- 小圆点装饰 -->
+  <g fill="#ffffff">
+    <circle cx="480" cy="180" r="6" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.2;0.7" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1240" cy="240" r="5" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;0.15;0.6" dur="5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1720" cy="700" r="7" opacity="0.5">
+      <animate attributeName="opacity" values="0.5;0.2;0.5" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="200" cy="600" r="5" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;0.25;0.6" dur="4.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
