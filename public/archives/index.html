@@ -227,10 +227,8 @@
        ============================================ */
     .board {
       position: relative;
-      max-width: 700px;
+      max-width: 900px;
       margin: 40px auto 0;
-      margin-left: auto;
-      margin-right: auto;
       background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -636,17 +634,16 @@
        ============================================ */
     .home-layout {
       position: relative;
-      max-width: 1200px;
+      max-width: 1920px;
       margin: 0 auto;
-      padding: 0 20px;
     }
 
-    /* 左侧个人资料栏 — 独立浮在背景图上 */
+    /* 左侧目录栏 — 固定在左侧留白区 */
     .profile-card {
       position: fixed;
       top: 80px;
-      left: 30px;
-      width: 210px;
+      left: 60px;
+      width: 220px;
       background: linear-gradient(160deg, rgba(168, 216, 234, 0.5), rgba(255, 255, 255, 0.9) 60%);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -715,12 +712,12 @@
       transform: translateX(3px);
     }
 
-    /* 右侧项目栏 — 独立浮在背景图上 */
+    /* 右侧项目栏 — 固定在右侧留白区 */
     .projects-card {
       position: fixed;
       top: 80px;
-      right: 30px;
-      width: 280px;
+      right: 60px;
+      width: 260px;
       background: linear-gradient(200deg, rgba(168, 216, 234, 0.45), rgba(255, 255, 255, 0.9) 55%);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -805,10 +802,15 @@
     /* ============================================
        响应式
        ============================================ */
+    @media (max-width: 1400px) {
+      .profile-card { left: 20px; width: 190px; }
+      .projects-card { right: 20px; width: 230px; }
+    }
+
     @media (max-width: 1100px) {
-      .profile-card { left: 10px; width: 180px; }
-      .projects-card { right: 10px; width: 240px; }
-      .board { max-width: 600px; }
+      .profile-card { left: 10px; width: 170px; }
+      .projects-card { right: 10px; width: 200px; }
+      .board { max-width: 700px; }
     }
 
     @media (max-width: 900px) {
