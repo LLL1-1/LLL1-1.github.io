@@ -3,4 +3,10 @@ node_modules/
 _multiconfig.yml
 .DS_Store
 Thumbs.db
-.github/
+db.json
+
+# 构建产物：不再纳入版本控制（由 Actions 构建并作为 Pages artifact 发布）
+public/
+
+# 主题自带的仓库级配置（vendored 的 NexT 源码里带来的），不属于本仓库
+themes/next/.github/

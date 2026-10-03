@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+'use strict';
 /**
  * apply-patches.js — re-apply local fixes to dependencies after every install.
  *
@@ -28,16 +28,27 @@
  *
  * RUNS FROM: package.json "postinstall"
  * IDEMPOTENT: re-running makes no further change.
+ *
+ * NOTE — WHY THE hexo GUARD BELOW
+ *   Hexo loads every .js under scripts/ as a plugin script, evaluating it inside
+ *   a wrapper function. This file is a CLI (it starts with a shebang that npm
+ *   would otherwise need), so being evaluated by Hexo throws
+ *   "SyntaxError: Invalid or unexpected token" on every hexo command even though
+ *   generation still succeeds. The guard exits immediately when `hexo` is
+ *   defined, so the file is inert as a plugin and only runs under postinstall.
  */
-'use strict';
 
-const fs = require('fs');
-const path = require('path');
+if (typeof hexo !== 'undefined') {
+  // Loaded by Hexo as a plugin script: do nothing.
+  module.exports = {};
+} else {
+  const fs = require('fs');
+  const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..');
+  const ROOT = path.resolve(__dirname, '..');
 
-/** The environment block inserted into the git() spawn options. */
-const ENV_BLOCK = `      env: {
+  /** The environment block inserted into the git() spawn options. */
+  const ENV_BLOCK = `      env: {
         ...process.env,
         GIT_PAGER: 'cat',
         LESS: 'x4',
@@ -45,20 +56,20 @@ const ENV_BLOCK = `      env: {
         GCM_INTERACTIVE: 'never'
       }`;
 
-/** One patch: a file plus a literal before/after replacement. */
-const PATCHES = [
-  {
-    name: 'hexo-deployer-git: non-interactive, pager-free git environment',
-    file: path.join(ROOT, 'node_modules', 'hexo-deployer-git', 'lib', 'deployer.js'),
-    // Only change the git() helper, and only in its original shape.
-    before: `  function git(...args) {
+  /** One patch: a file plus a literal before/after replacement. */
+  const PATCHES = [
+    {
+      name: 'hexo-deployer-git: non-interactive, pager-free git environment',
+      file: path.join(ROOT, 'node_modules', 'hexo-deployer-git', 'lib', 'deployer.js'),
+      // Only change the git() helper, and only in its original shape.
+      before: `  function git(...args) {
     return spawn('git', args, {
       cwd: deployDir,
       verbose: verbose,
       stdio: 'inherit'
     });
   }`,
-    after: `  function git(...args) {
+      after: `  function git(...args) {
     return spawn('git', args, {
       cwd: deployDir,
       verbose: verbose,
@@ -67,45 +78,46 @@ const PATCHES = [
       ${ENV_BLOCK.trimStart()}
     });
   }`,
-    // Already-applied marker.
-    marker: "GIT_TERMINAL_PROMPT: '0'",
-  },
-];
+      // Already-applied marker.
+      marker: "GIT_TERMINAL_PROMPT: '0'",
+    },
+  ];
 
-let changed = 0;
-let skipped = 0;
-let failed = 0;
+  let changed = 0;
+  let skipped = 0;
+  let failed = 0;
 
-for (const p of PATCHES) {
-  if (!fs.existsSync(p.file)) {
-    console.log(`[apply-patches] SKIP (missing): ${p.name}`);
-    skipped++;
-    continue;
+  for (const p of PATCHES) {
+    if (!fs.existsSync(p.file)) {
+      console.log(`[apply-patches] SKIP (missing): ${p.name}`);
+      skipped++;
+      continue;
+    }
+
+    const source = fs.readFileSync(p.file, 'utf8');
+
+    if (source.includes(p.marker)) {
+      console.log(`[apply-patches] already applied: ${p.name}`);
+      skipped++;
+      continue;
+    }
+
+    if (!source.includes(p.before)) {
+      console.error(`[apply-patches] FAILED (unexpected file contents): ${p.name}`);
+      console.error(`[apply-patches]   ${p.file}`);
+      failed++;
+      continue;
+    }
+
+    fs.writeFileSync(p.file, source.replace(p.before, p.after), 'utf8');
+    console.log(`[apply-patches] applied: ${p.name}`);
+    changed++;
   }
 
-  const source = fs.readFileSync(p.file, 'utf8');
+  console.log(`[apply-patches] done: ${changed} applied, ${skipped} skipped, ${failed} failed`);
 
-  if (source.includes(p.marker)) {
-    console.log(`[apply-patches] already applied: ${p.name}`);
-    skipped++;
-    continue;
+  // A failure must not break `npm install` outright, but it must be visible.
+  if (failed > 0) {
+    console.error('[apply-patches] some patches could not be applied — deployment may need a manual fix.');
   }
-
-  if (!source.includes(p.before)) {
-    console.error(`[apply-patches] FAILED (unexpected file contents): ${p.name}`);
-    console.error(`[apply-patches]   ${p.file}`);
-    failed++;
-    continue;
-  }
-
-  fs.writeFileSync(p.file, source.replace(p.before, p.after), 'utf8');
-  console.log(`[apply-patches] applied: ${p.name}`);
-  changed++;
-}
-
-console.log(`[apply-patches] done: ${changed} applied, ${skipped} skipped, ${failed} failed`);
-
-// A failure must not break `npm install` outright, but it must be visible.
-if (failed > 0) {
-  console.error('[apply-patches] some patches could not be applied — deployment may need a manual fix.');
 }

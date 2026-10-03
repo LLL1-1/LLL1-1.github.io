@@ -168,13 +168,18 @@ github_banner:
   title: Follow me on GitHub
 
 # ---------------------------------------------------------------
-# Custom Styles
+# Skin / custom assets
 # ---------------------------------------------------------------
+# 注意：本站的布局由 themes/next/layout/ 下的自定义模板完全接管
+# （_layout.njk / index.njk / post.njk / page.njk / archive.njk / tag.njk / category.njk），
+# 因此 NexT 原生的 custom: / inject: 两个入口都不会被渲染，写了也不生效。
+# 皮肤的唯一入口是：
+#   - themes/next/layout/_layout.njk  -> <link href="/css/custom.css"> + <script src="/js/fluid.js">
+#   - source/css/custom.css           -> 全部样式
+#   - themes/next/source/js/fluid.js  -> 全部交互
+# 曾经这里同时配了 custom: 和 inject.head 两处同样的 custom.css（重复注入），
+# 已删除。
 custom:
-  - css/custom.css
-
-# Inject
 inject:
-  head:
-    - <link rel="stylesheet" href="/css/custom.css">
+  head: []
   bottom: []

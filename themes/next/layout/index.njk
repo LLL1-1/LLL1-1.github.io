@@ -22,34 +22,14 @@
     <div class="strip"></div>
     <div class="strip"></div>
   </div>
-  <script>
-    (function() {
-      var intro = document.getElementById('stripIntro');
-      if (!intro) return;
-      setTimeout(function() { intro.remove(); }, 700);
-    })();
-  </script>
+  <noscript>
+    <style>.strip-intro { display: none; }</style>
+  </noscript>
 {% endblock %}
 
 {% block content %}
 
   <div class="home-layout">
-
-    <!-- 左侧个人资料栏 -->
-    <aside class="profile-card">
-      <div class="profile-header">
-        <img class="profile-avatar" src="/images/avatar.jpg" alt="avatar">
-        <span class="profile-name">长青</span>
-      </div>
-      <div class="profile-recent-title">最近更新</div>
-      <ul class="profile-recent-list">
-        {% for post in page.posts.toArray() %}
-          {% if loop.index <= 6 %}
-            <li><a href="{{ url_for(post.path) }}" title="{{ post.title }}">{{ post.title }}</a></li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-    </aside>
 
     <!-- 中间文章列表 -->
     <div class="articles-col">
@@ -105,28 +85,56 @@
       {% endif %}
     </div>
 
-    <!-- 右侧项目栏 -->
-    <aside class="projects-card">
-      <div class="projects-title">📂 项目</div>
-
-      <a class="project-item" href="/projects/">
-        <div class="project-item-name">🚀 个人博客</div>
-        <div class="project-item-desc">基于 Hexo + GitHub Pages 的个人博客，自定义 Fluid 风格主题</div>
-      </a>
-
-      <a class="project-item" href="/projects/">
-        <div class="project-item-name">🎨 UI 动效库</div>
-        <div class="project-item-desc">收藏常用的 CSS 动效：开屏长条抽离、玻璃质感、视差滚动</div>
-      </a>
-
-      <a class="project-item" href="/projects/">
-        <div class="project-item-name">📖 学习笔记集</div>
-        <div class="project-item-desc">前端技术学习笔记：CSS 动画、JS 交互、构建工具链</div>
-      </a>
-
-      <a class="projects-more" href="/projects/">查看全部项目 →</a>
-    </aside>
-
   </div>
+
+{% endblock %}
+
+{# 随正文滚动的两侧浮层。
+   必须放在 .board 外面：.board 有 backdrop-filter（会成为绝对/固定定位后代的包含块）
+   和 overflow:hidden（会把伸到面板外的部分裁掉）。
+   .page-body 与文章面板同宽同位，作为浮层的定位上下文。 #}
+{% block overlays %}
+
+  <div class="page-body">
+
+  <!-- 左侧个人资料栏 -->
+  <aside class="profile-card">
+    <div class="profile-header">
+      <img class="profile-avatar" src="/images/avatar.jpg" alt="avatar">
+      <span class="profile-name">长青</span>
+    </div>
+    <div class="profile-recent-title">最近更新</div>
+    <ul class="profile-recent-list">
+      {% for post in page.posts.toArray() %}
+        {% if loop.index <= 6 %}
+          <li><a href="{{ url_for(post.path) }}" title="{{ post.title }}">{{ post.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </aside>
+
+  <!-- 右侧项目栏 -->
+  <aside class="projects-card">
+    <div class="projects-title">📂 项目</div>
+
+    <a class="project-item" href="/projects/">
+      <div class="project-item-name">🚀 个人博客</div>
+      <div class="project-item-desc">基于 Hexo + GitHub Pages 的个人博客，自定义 Fluid 风格主题</div>
+    </a>
+
+    <a class="project-item" href="/projects/">
+      <div class="project-item-name">🎨 UI 动效库</div>
+      <div class="project-item-desc">收藏常用的 CSS 动效：开屏长条抽离、玻璃质感、视差滚动</div>
+    </a>
+
+    <a class="project-item" href="/projects/">
+      <div class="project-item-name">📖 学习笔记集</div>
+      <div class="project-item-desc">前端技术学习笔记：CSS 动画、JS 交互、构建工具链</div>
+    </a>
+
+    <a class="projects-more" href="/projects/">查看全部项目 →</a>
+  </aside>
+
+  </div>{# /.page-body #}
 
 {% endblock %}

@@ -1,15 +1,31 @@
 name: Deploy Hexo to GitHub Pages
 
+# 部署方式：Actions 制品部署（artifacts-based Pages deployment）
+#   build → 上传 public/ 为 artifact → deploy-pages 直接发布
+# 仓库里不再需要（也不应该）提交 public/：生成物不落版本控制，
+# 因此也不存在“生成物覆盖手改文件”和构建提交回源码仓库的问题。
+#
+# 一次性设置：仓库 Settings → Pages → Source 选 “GitHub Actions”。
+# 改这个设置之前，线上仍停留在上一次分支发布的版本，不会自动更新。
+
 on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+# 同时只跑一个发布，避免两次构建互相覆盖
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,20 +35,35 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: npm
 
+      # 主题是 themes/next/ 里的普通目录（不是 git submodule），
+      # 依赖只有 hexo 本体 + 渲染/生成插件，统一由根 package-lock.json 锁定。
       - name: Install dependencies
-        run: |
-          npm install
-          npm install hexo-theme-next
-          cd themes/next && npm install --production && cd ../..
+        run: npm ci
 
       - name: Build
         run: npx hexo generate
 
-      - name: Commit and push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f public/*
-          git commit -m "Auto build" || echo "No changes"
-          git push origin HEAD:master
+      # 防止 GitHub Pages 走 Jekyll 处理生成物
+      - name: Add .nojekyll
+        run: touch public/.nojekyll
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
