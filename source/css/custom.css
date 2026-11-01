@@ -259,6 +259,12 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 40px;
 }
 
+/* 文章页（含项目详情）内容通常较长，面板适当加宽，避免正文显得细长。
+   首页/项目/归档等列表页仍是 700px，因为两栏布局和卡片尺寸是按那个宽度调的。 */
+body.is-post-page .board {
+  max-width: 880px;
+}
+
 /* 滚动视差：由 fluid.js 写入 --lift，用 margin 抬起面板（保持无 transform） */
 .board.visible[style*='--lift'] {
   margin-top: calc(40px - var(--lift, 0px)) !important;
@@ -472,36 +478,58 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
 }
 
-/* 正文里的表格（Markdown 表格之前没有样式，长内容会顶出面板） */
-.post-body table {
+/* 正文里的 Markdown 表格。
+   注意只能用 > 直接子元素：Hexo 高亮的代码块内部也是 <table>
+   （gutter + code 两列），用后代选择器会把代码块一起改坏。 */
+.post-body > table {
   width: 100%;
   border-collapse: collapse;
   margin: 18px 0 22px;
   font-size: 0.94em;
-  display: block;
-  overflow-x: auto;
 }
 
-.post-body table thead th {
+.post-body > table thead th {
   background: rgba(168, 216, 234, 0.32);
   color: #1a3a6c;
   font-weight: bold;
   text-align: left;
 }
 
-.post-body table th,
-.post-body table td {
+.post-body > table th,
+.post-body > table td {
   padding: 9px 12px;
   border: 1px solid rgba(168, 208, 224, 0.45);
   vertical-align: top;
   word-break: break-word;
 }
 
-.post-body table tbody tr:nth-child(even) {
+.post-body > table tbody tr:nth-child(even) {
   background: rgba(168, 216, 234, 0.1);
 }
 
-/* 正文里的代码块：避免贴边，允许横向滚动 */
+/* 代码块：Hexo 高亮输出的是 figure.highlight > table，别给它加表格边框 */
+.post-body figure.highlight {
+  margin: 18px 0;
+}
+
+.post-body figure.highlight table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  font-size: 1em;
+}
+
+.post-body figure.highlight td {
+  border: none;
+  padding: 0;
+}
+
+.post-body figure.highlight .gutter {
+  width: 1%;
+  user-select: none;
+}
+
+/* 正文里的代码块：允许横向滚动 */
 .post-body pre {
   max-width: 100%;
   overflow-x: auto;
