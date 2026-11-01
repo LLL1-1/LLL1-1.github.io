@@ -350,11 +350,15 @@ h1, h2, h3, h4, h5, h6 {
 .index-meta {
   display: flex;
   align-items: center;
-  gap: 14px;
+  flex-wrap: wrap;
+  gap: 8px 14px;
   color: var(--sec-text-color);
   font-size: 0.88em;
   margin-bottom: 10px;
 }
+
+/* 标签一多时不再把日期/标签挤成竖排 */
+.index-meta > span { white-space: nowrap; }
 
 .index-tag {
   color: #2a8ab8;
@@ -362,6 +366,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 2px 12px;
   border-radius: 12px;
   font-size: 0.92em;
+  white-space: nowrap;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -459,7 +464,99 @@ h1, h2, h3, h4, h5, h6 {
 
 .post-body img {
   max-width: 100%;
-  border-radius: 6px;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(168, 216, 234, 0.45);
+  box-shadow: 0 4px 16px rgba(60, 90, 110, 0.12);
+  margin: 18px 0 6px;
+  display: block;
+}
+
+/* 正文里的表格（Markdown 表格之前没有样式，长内容会顶出面板） */
+.post-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0 22px;
+  font-size: 0.94em;
+  display: block;
+  overflow-x: auto;
+}
+
+.post-body table thead th {
+  background: rgba(168, 216, 234, 0.32);
+  color: #1a3a6c;
+  font-weight: bold;
+  text-align: left;
+}
+
+.post-body table th,
+.post-body table td {
+  padding: 9px 12px;
+  border: 1px solid rgba(168, 208, 224, 0.45);
+  vertical-align: top;
+  word-break: break-word;
+}
+
+.post-body table tbody tr:nth-child(even) {
+  background: rgba(168, 216, 234, 0.1);
+}
+
+/* 正文里的代码块：避免贴边，允许横向滚动 */
+.post-body pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* 项目详情页的仓库入口 */
+.post-repo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 4px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: linear-gradient(120deg, rgba(168, 216, 234, 0.28), rgba(181, 224, 196, 0.28));
+  border: 1px solid rgba(168, 216, 234, 0.45);
+  font-size: 0.95em;
+}
+
+.post-repo-label {
+  color: #2a5a7a;
+  font-weight: bold;
+}
+
+.post-repo a {
+  color: #1a6a9a;
+  word-break: break-all;
+}
+
+/* 项目页空状态 */
+.projects-empty {
+  color: var(--sec-text-color);
+  padding: 24px 0;
+}
+
+/* 项目页标题区 */
+.projects-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 4px 0 18px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(168, 208, 224, 0.45);
+}
+
+.projects-head-title {
+  font-size: 1.5em;
+  color: #1a3a6c;
+  margin: 0;
+}
+
+.projects-head-count {
+  color: var(--sec-text-color);
+  font-size: 0.9em;
 }
 
 /* ============================================
@@ -766,8 +863,9 @@ body.scrolling ::-webkit-scrollbar-thumb {
      卡片宽 420px，所以容器内 left = 25vw + 525px - 210px = calc(25vw + 315px)。 */
   left: calc(25vw + 315px);
   width: 420px;
-  /* 上下长度缩到 0.75 倍（840px → 630px） */
-  height: 630px;
+  /* 项目数量是动态的（取最新 3 个），高度改为随内容自适应：
+     固定 630px 在只有 2 个项目时会在下方留一大片空白。 */
+  min-height: 420px;
   background: linear-gradient(200deg, rgba(168, 216, 234, 0.3), rgba(255, 255, 255, 0.3) 55%);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -815,6 +913,16 @@ body.scrolling ::-webkit-scrollbar-thumb {
   display: flex;
   align-items: center;
   gap: 6px;
+  overflow: hidden;
+}
+
+.pi-emoji { flex-shrink: 0; }
+
+.pi-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .project-item-desc {

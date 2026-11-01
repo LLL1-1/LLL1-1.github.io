@@ -117,20 +117,15 @@
   <aside class="projects-card">
     <div class="projects-title">📂 项目</div>
 
-    <a class="project-item" href="/projects/">
-      <div class="project-item-name">🚀 个人博客</div>
-      <div class="project-item-desc">基于 Hexo + GitHub Pages 的个人博客，自定义 Fluid 风格主题</div>
-    </a>
-
-    <a class="project-item" href="/projects/">
-      <div class="project-item-name">🎨 UI 动效库</div>
-      <div class="project-item-desc">收藏常用的 CSS 动效：开屏长条抽离、玻璃质感、视差滚动</div>
-    </a>
-
-    <a class="project-item" href="/projects/">
-      <div class="project-item-name">📖 学习笔记集</div>
-      <div class="project-item-desc">前端技术学习笔记：CSS 动画、JS 交互、构建工具链</div>
-    </a>
+    {# 项目栏：自动取「分类 = 项目」的最新 3 篇文章，点卡片直接进详情页 #}
+    {% for post in get_project_posts(3) %}
+      <a class="project-item" href="{{ url_for(post.path) }}">
+        <div class="project-item-name">
+          <span class="pi-emoji">📦</span><span class="pi-text">{{ post.title }}</span>
+        </div>
+        <div class="project-item-desc">{{ (post.excerpt or post.content) | striptags | truncate(46) }}</div>
+      </a>
+    {% endfor %}
 
     <a class="projects-more" href="/projects/">查看全部项目 →</a>
   </aside>

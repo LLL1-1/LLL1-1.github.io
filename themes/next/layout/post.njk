@@ -32,6 +32,13 @@
     </div>
   </div>
 
+  {% if page.repo %}
+    <div class="post-repo">
+      <span class="post-repo-label">💻 源代码</span>
+      <a href="{{ page.repo }}" target="_blank" rel="noopener noreferrer">{{ page.repo | replace('https://', '') }}</a>
+    </div>
+  {% endif %}
+
   <div class="post-body">
     {{ page.content }}
   </div>

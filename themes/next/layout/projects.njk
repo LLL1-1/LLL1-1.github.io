@@ -1,0 +1,60 @@
+{% extends '_layout.njk' %}
+
+{% block title %}项目 | {{ config.title }}{% endblock %}
+
+{% block content %}
+
+  <div class="home-layout">
+    <div class="articles-col">
+
+      {% set projects = get_project_posts() %}
+
+      {% if projects.length %}
+        <div class="projects-head">
+          <h1 class="projects-head-title">项目</h1>
+          <span class="projects-head-count">共 {{ projects.length }} 个 · 按更新时间倒序</span>
+        </div>
+        {% for post in projects %}
+          <article class="index-card">
+            <a class="index-img" href="{{ url_for(post.path) }}">
+              {% if post.banner %}
+                <img src="{{ url_for(post.banner) }}" alt="{{ post.title }}">
+              {% else %}
+                {% set n = loop.index % 3 %}
+                {% if n == 1 %}
+                  <img src="/images/thumb-1.svg" alt="{{ post.title }}">
+                {% elif n == 2 %}
+                  <img src="/images/thumb-2.svg" alt="{{ post.title }}">
+                {% else %}
+                  <img src="/images/thumb-3.svg" alt="{{ post.title }}">
+                {% endif %}
+              {% endif %}
+            </a>
+            <div class="index-info">
+              <h2 class="index-title">
+                <a href="{{ url_for(post.path) }}">{{ post.title }}</a>
+              </h2>
+              <div class="index-meta">
+                <span>{{ date(post.date, 'YYYY-MM-DD') }}</span>
+                {% if post.tags and post.tags.length %}
+                  {% for tag in post.tags.toArray() %}
+                    {% if loop.index <= 3 %}
+                      <span class="index-tag"># {{ tag.name }}</span>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <div class="index-excerpt">
+                {{ (post.excerpt or post.content) | striptags | truncate(90) }}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        <p class="projects-empty">还没有项目。写一篇分类为「项目」的文章，就会自动出现在这里。</p>
+      {% endif %}
+
+    </div>
+  </div>
+
+{% endblock %}
