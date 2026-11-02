@@ -56,6 +56,13 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
 }
 
+/* <picture> 是行内元素，要撑满容器，否则首图会塌成 0 高 */
+.banner-bg picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .banner-bg img {
   width: 100%;
   height: 100%;
@@ -225,7 +232,16 @@ h1, h2, h3, h4, h5, h6 {
   position: fixed;
   inset: 0;
   z-index: -1;
+  /* 老浏览器用这张 JPEG；支持 image-set 的会挑更小的 AVIF / WebP */
   background: url('/images/bg.jpg') center center / cover no-repeat;
+  background-image: image-set(
+    url('/images/bg.avif') type('image/avif'),
+    url('/images/bg.webp') type('image/webp'),
+    url('/images/bg.jpg') type('image/jpeg')
+  );
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   filter: brightness(1.05) opacity(0.8);
 }
 

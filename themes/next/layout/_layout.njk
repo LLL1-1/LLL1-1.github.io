@@ -31,7 +31,13 @@
         <img src="/images/avatar.jpg" alt="avatar">
       </div>
       <div class="banner-bg">
-        <img src="/images/banner.png" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;">
+        {# 首图给三种格式，浏览器按支持度自动挑最省流量的；
+           1280 宽版本给窄屏，1920 给大屏 #}
+        <picture>
+          <source type="image/avif" srcset="/images/banner-1280.avif 1280w, /images/banner.avif 1920w" sizes="100vw">
+          <source type="image/webp" srcset="/images/banner-1280.webp 1280w, /images/banner.webp 1920w" sizes="100vw">
+          <img src="/images/banner.jpg" alt="" fetchpriority="high" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;">
+        </picture>
       </div>
       <div class="banner-mask"></div>
       <div class="banner-content">

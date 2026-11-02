@@ -5,7 +5,11 @@
 {% block banner %}
   <header class="banner small">
     <div class="banner-bg">
-      <img src="/images/banner.png" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;">
+      <picture>
+        <source type="image/avif" srcset="/images/banner-1280.avif 1280w, /images/banner.avif 1920w" sizes="100vw">
+        <source type="image/webp" srcset="/images/banner-1280.webp 1280w, /images/banner.webp 1920w" sizes="100vw">
+        <img src="/images/banner.jpg" alt="" fetchpriority="high" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;">
+      </picture>
     </div>
     <div class="banner-mask"></div>
     <div class="banner-content" style="top:55%;">
